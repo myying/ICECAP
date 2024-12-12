@@ -1,0 +1,7 @@
+*.pyc
+__pycache__/
+login-3*
+*.log
+.vscode/
+.env
+icecap.conf
