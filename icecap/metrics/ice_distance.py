@@ -4,10 +4,11 @@ import numpy as np
 import xarray as xr
 import cartopy.crs as ccrs
 from scipy import ndimage
-from dask.distributed import Client
+from dask.distributed import Client, LocalCluster
 from .metric import BaseMetric
 
-client=Client(threads_per_worker=1)
+cluster=LocalCluster(n_workers=6, threads_per_worker=1)
+client=Client(cluster)
 xr.set_options(keep_attrs=True)
 os.environ['HDF5_USE_FILE_LOCKING']='FALSE'
 
