@@ -29,15 +29,26 @@ class NerscData(dataobjects.ForecastObject):
             if self.expname == 'topaz4':
                 server_ext = 't42'
                 self.varname = 'fice'
+                file_ext = 'ncml'
             elif self.expname == 'topaz5':
                 server_ext = 't5'
                 self.varname = 'siconc'
+                file_ext = 'ncml'
+            elif self.expname[:7] == 'topaz5_':
+                self.varname = 'aice_d'
+                file_ext = 'nc'
             else:
                 raise ValueError(f'Retrieval for expname {self.expname} not implemented')
 
-            self.root_server = f"https://thredds.met.no/thredds/dodsC/acciberg{server_ext}/bulletins/"
+            if len(self.expname)>6 and self.expname[6] == '_':
+                case = self.expname[7:]
+                expname = 'topaz5_local'
+                self.root_server = f"/cluster/work/users/yingyue/TP5.{case}/output/"
+            else:
+                expname = self.expname
+                self.root_server = f"https://thredds.met.no/thredds/dodsC/acciberg{server_ext}/bulletins/"
             # format is YYYY/MM/topaz?_mem???_bYYYY-MM-DDT00.ncml
-            self.fileformat = '{}/'f'{self.expname}''_mem{:03d}_b{}T00.ncml'
+            self.fileformat = '{}/'f'{expname}''_mem{:03d}_b{}T00.'f'{file_ext}'
 
 
 
